@@ -1,202 +1,91 @@
-// ========================================
-// 🎮 GAMEZONE - SCRIPT PRINCIPAL
-// ========================================
-
-
-// ========================================
-// 📌 ELEMENTOS DEL HTML
-// ========================================
+console.log("GAMEZONE INICIANDO...");
 
 const buscador = document.getElementById("buscador");
 const juegos = document.querySelectorAll(".game-card");
 const filtros = document.querySelectorAll(".filter");
 
 
-// ========================================
+// ================================
 // 🔎 BUSCADOR
-// ========================================
+// ================================
 
 if (buscador) {
-
     buscador.addEventListener("input", function () {
 
         const texto = buscador.value.toLowerCase().trim();
 
-        // Cuando se escribe en el buscador,
-        // quitamos el estado activo de los filtros
         filtros.forEach(function (boton) {
             boton.classList.remove("active");
         });
 
         juegos.forEach(function (juego) {
 
-            const nombre = juego
-                .querySelector(".game-info h3");
+            const nombreElemento = juego.querySelector(".game-info h3");
 
-            const categoria = juego
-                .getAttribute("data-category") || "";
-
-            const nombreTexto = nombre
-                ? nombre.textContent.toLowerCase()
+            const nombre = nombreElemento
+                ? nombreElemento.textContent.toLowerCase()
                 : "";
 
-            const categoriaTexto = categoria.toLowerCase();
+            const categorias = (
+                juego.getAttribute("data-category") || ""
+            ).toLowerCase();
 
             if (
-                nombreTexto.includes(texto) ||
-                categoriaTexto.includes(texto)
+                nombre.includes(texto) ||
+                categorias.includes(texto)
             ) {
-
-                juego.style.setProperty(
-                    "display",
-                    "grid",
-                    "important"
-                );
-
+                juego.style.display = "grid";
             } else {
-
-                juego.style.setProperty(
-                    "display",
-                    "none",
-                    "important"
-                );
-
+                juego.style.display = "none";
             }
 
         });
 
     });
-
 }
 
 
-// ========================================
-// 🎯 FILTROS DE CATEGORÍAS
-// ========================================
+// ================================
+// 🎯 FILTROS
+// ================================
 
 filtros.forEach(function (filtro) {
 
-    filtro.addEventListener("click", function (evento) {
+    filtro.addEventListener("click", function () {
 
-        evento.preventDefault();
-
-        // Quitar "active" de todos
         filtros.forEach(function (boton) {
             boton.classList.remove("active");
         });
 
-        // Activar el botón seleccionado
         filtro.classList.add("active");
 
-        // Limpiar buscador
         if (buscador) {
             buscador.value = "";
         }
 
-        // Obtener categoría
         const categoria = (
             filtro.getAttribute("data-filter") || ""
         ).toLowerCase().trim();
 
+        console.log("Filtro:", categoria);
 
-        // Revisar cada juego
         juegos.forEach(function (juego) {
 
             const categorias = (
                 juego.getAttribute("data-category") || ""
-            ).toLowerCase().trim();
+            ).toLowerCase();
 
-            let mostrar = false;
-
-
-            // TODOS
             if (categoria === "todos") {
 
-                mostrar = true;
+                juego.style.display = "grid";
 
-            }
+            } else if (categorias.includes(categoria)) {
 
-
-            // SHOOTER
-            else if (categoria === "shooter") {
-
-                mostrar = categorias.includes("shooter");
-
-            }
-
-
-            // BATTLE ROYALE
-            else if (categoria === "battle") {
-
-                mostrar = categorias.includes("battle");
-
-            }
-
-
-            // SANDBOX
-            else if (categoria === "sandbox") {
-
-                mostrar = categorias.includes("sandbox");
-
-            }
-
-
-            // MOBA
-            else if (categoria === "moba") {
-
-                mostrar = categorias.includes("moba");
-
-            }
-
-
-            // CARRERAS
-            else if (categoria === "carreras") {
-
-                mostrar = categorias.includes("carreras");
-
-            }
-
-
-            // TERROR
-            else if (categoria === "terror") {
-
-                mostrar = categorias.includes("terror");
-
-            }
-
-
-            // AVENTURA
-            else if (categoria === "aventura") {
-
-                mostrar = categorias.includes("aventura");
-
-            }
-
-
-            // RPG
-            else if (categoria === "rpg") {
-
-                mostrar = categorias.includes("rpg");
-
-            }
-
-
-            // MOSTRAR / OCULTAR
-            if (mostrar) {
-
-                juego.style.setProperty(
-                    "display",
-                    "grid",
-                    "important"
-                );
+                juego.style.display = "grid";
 
             } else {
 
-                juego.style.setProperty(
-                    "display",
-                    "none",
-                    "important"
-                );
+                juego.style.display = "none";
 
             }
 
@@ -207,9 +96,9 @@ filtros.forEach(function (filtro) {
 });
 
 
-// ========================================
-// 🎮 INFORMACIÓN DE LOS JUEGOS
-// ========================================
+// ================================
+// 🎮 INFORMACIÓN DE JUEGOS
+// ================================
 
 const datosJuegos = {
 
@@ -232,7 +121,7 @@ const datosJuegos = {
         year: "2011",
         developer: "Mojang Studios",
         platforms: "PC, PlayStation, Xbox, Switch, Mobile",
-        description: "Un enorme mundo de bloques donde puedes construir, explorar, sobrevivir y crear prácticamente cualquier cosa.",
+        description: "Un enorme mundo de bloques donde puedes construir, explorar y sobrevivir.",
         graphics: 80,
         gameplay: 98,
         fun: 99,
@@ -245,7 +134,7 @@ const datosJuegos = {
         year: "2017",
         developer: "Epic Games",
         platforms: "PC, PlayStation, Xbox, Switch, Mobile",
-        description: "Battle royale con construcción, armas, eventos y una gran cantidad de contenido.",
+        description: "Battle royale con construcción, armas y eventos.",
         graphics: 90,
         gameplay: 96,
         fun: 97,
@@ -271,7 +160,7 @@ const datosJuegos = {
         year: "2017",
         developer: "Garena",
         platforms: "Android, iOS",
-        description: "Battle royale rápido diseñado para partidas cortas y dispositivos móviles.",
+        description: "Battle royale rápido diseñado para partidas cortas.",
         graphics: 75,
         gameplay: 92,
         fun: 94,
@@ -284,7 +173,7 @@ const datosJuegos = {
         year: "2018",
         developer: "PUBG Corporation",
         platforms: "Android, iOS",
-        description: "Battle royale donde debes sobrevivir contra otros jugadores hasta ser el último en pie.",
+        description: "Battle royale donde debes sobrevivir contra otros jugadores.",
         graphics: 88,
         gameplay: 95,
         fun: 94,
@@ -297,7 +186,7 @@ const datosJuegos = {
         year: "2012",
         developer: "King",
         platforms: "Android, iOS, PC",
-        description: "Popular juego de rompecabezas basado en combinar caramelos.",
+        description: "Juego de rompecabezas basado en combinar caramelos.",
         graphics: 70,
         gameplay: 85,
         fun: 90,
@@ -323,7 +212,7 @@ const datosJuegos = {
         year: "2020",
         developer: "Riot Games",
         platforms: "PC",
-        description: "Shooter táctico competitivo que combina disparos con habilidades especiales.",
+        description: "Shooter táctico competitivo que combina disparos con habilidades.",
         graphics: 85,
         gameplay: 97,
         fun: 95,
@@ -336,7 +225,7 @@ const datosJuegos = {
         year: "2013",
         developer: "Rockstar Games",
         platforms: "PC, PlayStation, Xbox",
-        description: "Mundo abierto lleno de vehículos, misiones, personajes y actividades.",
+        description: "Mundo abierto lleno de vehículos, misiones y actividades.",
         graphics: 95,
         gameplay: 98,
         fun: 99,
@@ -401,7 +290,7 @@ const datosJuegos = {
         year: "2018",
         developer: "Santa Monica Studio",
         platforms: "PC, PlayStation",
-        description: "Aventura épica protagonizada por Kratos y su hijo Atreus.",
+        description: "Aventura épica protagonizada por Kratos y Atreus.",
         graphics: 99,
         gameplay: 98,
         fun: 98,
@@ -427,7 +316,7 @@ const datosJuegos = {
         year: "2020",
         developer: "Activision",
         platforms: "PC, PlayStation, Xbox",
-        description: "Battle royale y shooter competitivo de la franquicia Call of Duty.",
+        description: "Battle royale y shooter competitivo de Call of Duty.",
         graphics: 96,
         gameplay: 97,
         fun: 95,
@@ -453,7 +342,7 @@ const datosJuegos = {
         year: "2022",
         developer: "FromSoftware",
         platforms: "PC, PlayStation, Xbox",
-        description: "RPG de mundo abierto con exploración, combates difíciles y una enorme cantidad de contenido.",
+        description: "RPG de mundo abierto con exploración y combates difíciles.",
         graphics: 98,
         gameplay: 99,
         fun: 97,
@@ -466,7 +355,7 @@ const datosJuegos = {
         year: "2013",
         developer: "Naughty Dog",
         platforms: "PC, PlayStation",
-        description: "Aventura de supervivencia con una historia centrada en Joel y Ellie.",
+        description: "Aventura de supervivencia centrada en Joel y Ellie.",
         graphics: 98,
         gameplay: 97,
         fun: 97,
@@ -476,9 +365,9 @@ const datosJuegos = {
 };
 
 
-// ========================================
-// 🪟 MODAL DE JUEGOS
-// ========================================
+// ================================
+// 🪟 MODAL
+// ================================
 
 const modal = document.getElementById("game-modal");
 const closeModal = document.getElementById("close-modal");
@@ -492,11 +381,6 @@ const modalDeveloper = document.getElementById("modal-developer");
 const modalPlatforms = document.getElementById("modal-platforms");
 const modalDescription = document.getElementById("modal-description");
 
-
-// ========================================
-// 📊 BARRAS DE ESTADÍSTICAS
-// ========================================
-
 const graphicsBar = document.getElementById("graphics-bar");
 const gameplayBar = document.getElementById("gameplay-bar");
 const funBar = document.getElementById("fun-bar");
@@ -508,9 +392,9 @@ const funNumber = document.getElementById("fun-number");
 const multiplayerNumber = document.getElementById("multiplayer-number");
 
 
-// ========================================
-// 🎮 ABRIR INFORMACIÓN DEL JUEGO
-// ========================================
+// ================================
+// 🎮 BOTONES DE JUEGOS
+// ================================
 
 const botonesJuego = document.querySelectorAll(".game-button");
 
@@ -520,32 +404,20 @@ botonesJuego.forEach(function (boton) {
 
         const tarjeta = boton.closest(".game-card");
 
-        if (!tarjeta) {
-            return;
-        }
+        if (!tarjeta) return;
 
-        const titulo = tarjeta
-            .querySelector(".game-info h3");
+        const tituloElemento =
+            tarjeta.querySelector(".game-info h3");
 
-        if (!titulo) {
-            return;
-        }
+        if (!tituloElemento) return;
 
-        const nombreJuego = titulo.textContent.trim();
+        const nombreJuego =
+            tituloElemento.textContent.trim();
 
         const datos = datosJuegos[nombreJuego];
 
-        if (!datos) {
-            console.log(
-                "No hay información para:",
-                nombreJuego
-            );
+        if (!datos) return;
 
-            return;
-        }
-
-
-        // Imagen
         const imagen = tarjeta.querySelector("img");
 
         if (imagen && modalImage) {
@@ -553,82 +425,54 @@ botonesJuego.forEach(function (boton) {
             modalImage.alt = nombreJuego;
         }
 
-
-        // Información
-        if (modalTitle) {
+        if (modalTitle)
             modalTitle.textContent = nombreJuego;
-        }
 
-        if (modalCategory) {
+        if (modalCategory)
             modalCategory.textContent = datos.categoria;
-        }
 
-        if (modalRating) {
+        if (modalRating)
             modalRating.textContent = datos.rating;
-        }
 
-        if (modalYear) {
+        if (modalYear)
             modalYear.textContent = datos.year;
-        }
 
-        if (modalDeveloper) {
+        if (modalDeveloper)
             modalDeveloper.textContent = datos.developer;
-        }
 
-        if (modalPlatforms) {
+        if (modalPlatforms)
             modalPlatforms.textContent = datos.platforms;
-        }
 
-        if (modalDescription) {
+        if (modalDescription)
             modalDescription.textContent = datos.description;
-        }
 
 
-        // Estadísticas
-        if (graphicsBar) {
-            graphicsBar.style.width =
-                datos.graphics + "%";
-        }
+        if (graphicsBar)
+            graphicsBar.style.width = datos.graphics + "%";
 
-        if (gameplayBar) {
-            gameplayBar.style.width =
-                datos.gameplay + "%";
-        }
+        if (gameplayBar)
+            gameplayBar.style.width = datos.gameplay + "%";
 
-        if (funBar) {
-            funBar.style.width =
-                datos.fun + "%";
-        }
+        if (funBar)
+            funBar.style.width = datos.fun + "%";
 
-        if (multiplayerBar) {
-            multiplayerBar.style.width =
-                datos.multiplayer + "%";
-        }
+        if (multiplayerBar)
+            multiplayerBar.style.width = datos.multiplayer + "%";
 
 
-        // Números
-        if (graphicsNumber) {
-            graphicsNumber.textContent =
-                datos.graphics + "/100";
-        }
+        if (graphicsNumber)
+            graphicsNumber.textContent = datos.graphics + "/100";
 
-        if (gameplayNumber) {
-            gameplayNumber.textContent =
-                datos.gameplay + "/100";
-        }
+        if (gameplayNumber)
+            gameplayNumber.textContent = datos.gameplay + "/100";
 
-        if (funNumber) {
-            funNumber.textContent =
-                datos.fun + "/100";
-        }
+        if (funNumber)
+            funNumber.textContent = datos.fun + "/100";
 
-        if (multiplayerNumber) {
-            multiplayerNumber.textContent =
-                datos.multiplayer + "/100";
-        }
+        if (multiplayerNumber)
+            multiplayerNumber.textContent = datos.multiplayer + "/100";
 
 
-        // Mostrar modal
         if (modal) {
             modal.classList.add("active");
         }
@@ -638,9 +482,9 @@ botonesJuego.forEach(function (boton) {
 });
 
 
-// ========================================
+// ================================
 // ❌ CERRAR MODAL
-// ========================================
+// ================================
 
 if (closeModal) {
 
@@ -655,7 +499,6 @@ if (closeModal) {
 }
 
 
-// Cerrar haciendo clic fuera
 if (modal) {
 
     modal.addEventListener("click", function (evento) {
@@ -669,7 +512,6 @@ if (modal) {
 }
 
 
-// Cerrar con ESC
 document.addEventListener("keydown", function (evento) {
 
     if (evento.key === "Escape") {
@@ -683,9 +525,9 @@ document.addEventListener("keydown", function (evento) {
 });
 
 
-// ========================================
+// ================================
 // ❤️ FAVORITOS
-// ========================================
+// ================================
 
 const favoritos = document.querySelectorAll(".favorite");
 
@@ -703,12 +545,15 @@ favoritos.forEach(function (boton) {
 });
 
 
-// ========================================
+// ================================
 // 📱 MENÚ MÓVIL
-// ========================================
+// ================================
 
-const menuButton = document.getElementById("menu-button");
-const navLinks = document.querySelector(".nav-links");
+const menuButton =
+    document.getElementById("menu-button");
+
+const navLinks =
+    document.querySelector(".nav-links");
 
 if (menuButton && navLinks) {
 
@@ -721,13 +566,10 @@ if (menuButton && navLinks) {
 }
 
 
-// ========================================
-// 📱 CERRAR MENÚ AL ELEGIR UNA OPCIÓN
-// ========================================
-
 if (navLinks) {
 
-    const enlaces = navLinks.querySelectorAll("a");
+    const enlaces =
+        navLinks.querySelectorAll("a");
 
     enlaces.forEach(function (enlace) {
 
@@ -742,9 +584,9 @@ if (navLinks) {
 }
 
 
-// ========================================
+// ================================
 // ✅ COMPROBACIÓN
-// ========================================
+// ================================
 
 console.log("GAMEZONE cargado correctamente.");
 console.log("Filtros encontrados:", filtros.length);
