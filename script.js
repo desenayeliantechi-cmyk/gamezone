@@ -4,11 +4,17 @@
 
 
 // ========================================
-// 🔍 BUSCADOR
+// 📌 ELEMENTOS DEL HTML
 // ========================================
 
 const buscador = document.getElementById("buscador");
 const juegos = document.querySelectorAll(".game-card");
+const filtros = document.querySelectorAll(".filter");
+
+
+// ========================================
+// 🔎 BUSCADOR
+// ========================================
 
 if (buscador) {
 
@@ -16,26 +22,45 @@ if (buscador) {
 
         const texto = buscador.value.toLowerCase().trim();
 
+        // Cuando se escribe en el buscador,
+        // quitamos el estado activo de los filtros
+        filtros.forEach(function (boton) {
+            boton.classList.remove("active");
+        });
+
         juegos.forEach(function (juego) {
 
-            const titulo = juego.querySelector("h3");
-            const categoria = juego.querySelector(".game-info span");
+            const nombre = juego
+                .querySelector(".game-info h3");
 
-            const nombre = titulo
-                ? titulo.textContent.toLowerCase()
+            const categoria = juego
+                .getAttribute("data-category") || "";
+
+            const nombreTexto = nombre
+                ? nombre.textContent.toLowerCase()
                 : "";
 
-            const tipo = categoria
-                ? categoria.textContent.toLowerCase()
-                : "";
+            const categoriaTexto = categoria.toLowerCase();
 
             if (
-                nombre.includes(texto) ||
-                tipo.includes(texto)
+                nombreTexto.includes(texto) ||
+                categoriaTexto.includes(texto)
             ) {
-                juego.style.display = "";
+
+                juego.style.setProperty(
+                    "display",
+                    "grid",
+                    "important"
+                );
+
             } else {
-                juego.style.display = "none";
+
+                juego.style.setProperty(
+                    "display",
+                    "none",
+                    "important"
+                );
+
             }
 
         });
@@ -46,16 +71,16 @@ if (buscador) {
 
 
 // ========================================
-// 🎯 FILTROS
+// 🎯 FILTROS DE CATEGORÍAS
 // ========================================
-
-const filtros = document.querySelectorAll(".filter");
 
 filtros.forEach(function (filtro) {
 
-    filtro.addEventListener("click", function () {
+    filtro.addEventListener("click", function (evento) {
 
-        // Quitar active de todos
+        evento.preventDefault();
+
+        // Quitar "active" de todos
         filtros.forEach(function (boton) {
             boton.classList.remove("active");
         });
@@ -70,95 +95,109 @@ filtros.forEach(function (filtro) {
 
         // Obtener categoría
         const categoria = (
-            filtro.dataset.filter || ""
+            filtro.getAttribute("data-filter") || ""
         ).toLowerCase().trim();
 
 
-        // Revisar todos los juegos
+        // Revisar cada juego
         juegos.forEach(function (juego) {
 
             const categorias = (
-                juego.dataset.category || ""
+                juego.getAttribute("data-category") || ""
             ).toLowerCase().trim();
 
             let mostrar = false;
 
 
-            // 🎮 TODOS
+            // TODOS
             if (categoria === "todos") {
+
                 mostrar = true;
+
             }
 
 
-            // 🔫 SHOOTER
+            // SHOOTER
             else if (categoria === "shooter") {
 
-                mostrar =
-                    categorias.includes("shooter");
+                mostrar = categorias.includes("shooter");
+
             }
 
 
-            // 🔥 BATTLE ROYALE
+            // BATTLE ROYALE
             else if (categoria === "battle") {
 
-                mostrar =
-                    categorias.includes("battle");
+                mostrar = categorias.includes("battle");
+
             }
 
 
-            // ⛏️ SANDBOX
+            // SANDBOX
             else if (categoria === "sandbox") {
 
-                mostrar =
-                    categorias.includes("sandbox");
+                mostrar = categorias.includes("sandbox");
+
             }
 
 
-            // ⚔️ MOBA
+            // MOBA
             else if (categoria === "moba") {
 
-                mostrar =
-                    categorias.includes("moba");
+                mostrar = categorias.includes("moba");
+
             }
 
 
-            // 🏎️ CARRERAS
+            // CARRERAS
             else if (categoria === "carreras") {
 
-                mostrar =
-                    categorias.includes("carreras");
+                mostrar = categorias.includes("carreras");
+
             }
 
 
-            // 🧟 TERROR
+            // TERROR
             else if (categoria === "terror") {
 
-                mostrar =
-                    categorias.includes("terror");
+                mostrar = categorias.includes("terror");
+
             }
 
 
-            // 🗺️ AVENTURA
+            // AVENTURA
             else if (categoria === "aventura") {
 
-                mostrar =
-                    categorias.includes("aventura");
+                mostrar = categorias.includes("aventura");
+
             }
 
 
-            // ⚔️ RPG
+            // RPG
             else if (categoria === "rpg") {
 
-                mostrar =
-                    categorias.includes("rpg");
+                mostrar = categorias.includes("rpg");
+
             }
 
 
-            // Mostrar u ocultar
+            // MOSTRAR / OCULTAR
             if (mostrar) {
-                juego.style.display = "";
+
+                juego.style.setProperty(
+                    "display",
+                    "grid",
+                    "important"
+                );
+
             } else {
-                juego.style.display = "none";
+
+                juego.style.setProperty(
+                    "display",
+                    "none",
+                    "important"
+                );
+
             }
 
         });
@@ -169,269 +208,268 @@ filtros.forEach(function (filtro) {
 
 
 // ========================================
-// 🎮 MODAL DE JUEGOS
-// ========================================
-
-const botones = document.querySelectorAll(".game-button");
-
-const modal = document.getElementById("game-modal");
-const cerrarModal = document.getElementById("close-modal");
-
-const modalImage = document.getElementById("modal-image");
-const modalTitle = document.getElementById("modal-title");
-const modalCategory = document.getElementById("modal-category");
-
-const modalRating = document.getElementById("modal-rating");
-const modalYear = document.getElementById("modal-year");
-const modalDeveloper = document.getElementById("modal-developer");
-const modalPlatforms = document.getElementById("modal-platforms");
-
-const modalDescription = document.getElementById("modal-description");
-
-
-// ========================================
-// 📊 DATOS DE LOS JUEGOS
+// 🎮 INFORMACIÓN DE LOS JUEGOS
 // ========================================
 
 const datosJuegos = {
 
-    roblox: {
-        rating: "8.5/10",
+    "Roblox": {
+        categoria: "Sandbox",
+        rating: "4.8",
         year: "2006",
         developer: "Roblox Corporation",
-        platforms: "PC, Xbox, PlayStation, Móvil",
-        description: "Una plataforma donde puedes jugar y crear millones de experiencias.",
-        graphics: 75,
+        platforms: "PC, Android, iOS, Xbox",
+        description: "Plataforma de juegos donde puedes jugar miles de experiencias creadas por otros usuarios.",
+        graphics: 70,
         gameplay: 90,
         fun: 95,
         multiplayer: 100
     },
 
-    minecraft: {
-        rating: "9.5/10",
+    "Minecraft": {
+        categoria: "Sandbox",
+        rating: "4.9",
         year: "2011",
         developer: "Mojang Studios",
-        platforms: "PC, Xbox, PlayStation, Switch, Móvil",
-        description: "Explora, construye y sobrevive en mundos llenos de posibilidades.",
+        platforms: "PC, PlayStation, Xbox, Switch, Mobile",
+        description: "Un enorme mundo de bloques donde puedes construir, explorar, sobrevivir y crear prácticamente cualquier cosa.",
         graphics: 80,
-        gameplay: 95,
-        fun: 98,
-        multiplayer: 95
-    },
-
-    fortnite: {
-        rating: "9/10",
-        year: "2017",
-        developer: "Epic Games",
-        platforms: "PC, PlayStation, Xbox, Switch, Móvil",
-        description: "Combates multijugador, construcción y diferentes modos de juego.",
-        graphics: 90,
-        gameplay: 95,
-        fun: 95,
+        gameplay: 98,
+        fun: 99,
         multiplayer: 100
     },
 
-    league: {
-        rating: "9/10",
+    "Fortnite": {
+        categoria: "Battle Royale",
+        rating: "4.7",
+        year: "2017",
+        developer: "Epic Games",
+        platforms: "PC, PlayStation, Xbox, Switch, Mobile",
+        description: "Battle royale con construcción, armas, eventos y una gran cantidad de contenido.",
+        graphics: 90,
+        gameplay: 96,
+        fun: 97,
+        multiplayer: 100
+    },
+
+    "League of Legends": {
+        categoria: "MOBA",
+        rating: "4.8",
         year: "2009",
         developer: "Riot Games",
         platforms: "PC",
-        description: "Batallas estratégicas por equipos con diferentes campeones.",
+        description: "MOBA competitivo donde dos equipos se enfrentan utilizando diferentes campeones.",
         graphics: 85,
         gameplay: 98,
-        fun: 90,
+        fun: 94,
         multiplayer: 100
     },
 
-    freefire: {
-        rating: "8.5/10",
+    "Free Fire": {
+        categoria: "Battle Royale",
+        rating: "4.6",
         year: "2017",
         developer: "Garena",
         platforms: "Android, iOS",
-        description: "Partidas rápidas donde tendrás que luchar para sobrevivir.",
-        graphics: 80,
-        gameplay: 90,
-        fun: 92,
-        multiplayer: 98
-    },
-
-    pubg: {
-        rating: "9/10",
-        year: "2018",
-        developer: "PUBG Studios",
-        platforms: "PC, Xbox, PlayStation, Móvil",
-        description: "Enfréntate a otros jugadores y conviértete en el último superviviente.",
-        graphics: 90,
-        gameplay: 95,
-        fun: 92,
+        description: "Battle royale rápido diseñado para partidas cortas y dispositivos móviles.",
+        graphics: 75,
+        gameplay: 92,
+        fun: 94,
         multiplayer: 100
     },
 
-    candycrush: {
-        rating: "8/10",
+    "PUBG Mobile": {
+        categoria: "Battle Royale",
+        rating: "4.7",
+        year: "2018",
+        developer: "PUBG Corporation",
+        platforms: "Android, iOS",
+        description: "Battle royale donde debes sobrevivir contra otros jugadores hasta ser el último en pie.",
+        graphics: 88,
+        gameplay: 95,
+        fun: 94,
+        multiplayer: 100
+    },
+
+    "Candy Crush Saga": {
+        categoria: "Casual",
+        rating: "4.5",
         year: "2012",
         developer: "King",
-        platforms: "PC, Android, iOS",
-        description: "Combina caramelos y supera cientos de niveles.",
-        graphics: 75,
+        platforms: "Android, iOS, PC",
+        description: "Popular juego de rompecabezas basado en combinar caramelos.",
+        graphics: 70,
         gameplay: 85,
         fun: 90,
         multiplayer: 60
     },
 
-    cs2: {
-        rating: "9/10",
+    "Counter-Strike 2": {
+        categoria: "Shooter",
+        rating: "4.8",
         year: "2023",
         developer: "Valve",
         platforms: "PC",
         description: "Shooter competitivo basado en estrategia, precisión y trabajo en equipo.",
         graphics: 90,
         gameplay: 98,
-        fun: 92,
+        fun: 95,
         multiplayer: 100
     },
 
-    valorant: {
-        rating: "9/10",
+    "Valorant": {
+        categoria: "Shooter",
+        rating: "4.7",
         year: "2020",
         developer: "Riot Games",
         platforms: "PC",
-        description: "Shooter competitivo con agentes que tienen habilidades especiales.",
+        description: "Shooter táctico competitivo que combina disparos con habilidades especiales.",
         graphics: 85,
-        gameplay: 98,
-        fun: 94,
+        gameplay: 97,
+        fun: 95,
         multiplayer: 100
     },
 
-    gta5: {
-        rating: "9.5/10",
+    "GTA V": {
+        categoria: "Acción",
+        rating: "4.9",
         year: "2013",
         developer: "Rockstar Games",
         platforms: "PC, PlayStation, Xbox",
-        description: "Explora Los Santos, completa misiones y juega GTA Online.",
+        description: "Mundo abierto lleno de vehículos, misiones, personajes y actividades.",
         graphics: 95,
         gameplay: 98,
-        fun: 100,
+        fun: 99,
         multiplayer: 100
     },
 
-    spiderman: {
-        rating: "9/10",
+    "Spider-Man": {
+        categoria: "Aventura",
+        rating: "4.8",
         year: "2018",
         developer: "Insomniac Games",
         platforms: "PC, PlayStation",
-        description: "Explora Nueva York mientras juegas como Spider-Man.",
+        description: "Juego de acción y aventura protagonizado por Spider-Man.",
         graphics: 98,
-        gameplay: 95,
-        fun: 95,
-        multiplayer: 0
-    },
-
-    resident4: {
-        rating: "9.5/10",
-        year: "2023",
-        developer: "Capcom",
-        platforms: "PC, PlayStation, Xbox",
-        description: "Sobrevive a una peligrosa aventura llena de enemigos y misterios.",
-        graphics: 98,
-        gameplay: 98,
-        fun: 95,
-        multiplayer: 0
-    },
-
-    nfs: {
-        rating: "8.5/10",
-        year: "2005",
-        developer: "EA Black Box",
-        platforms: "PC, PlayStation, Xbox",
-        description: "Carreras callejeras, coches rápidos y persecuciones policiales.",
-        graphics: 85,
-        gameplay: 92,
-        fun: 95,
-        multiplayer: 85
-    },
-
-    forza5: {
-        rating: "9.5/10",
-        year: "2021",
-        developer: "Playground Games",
-        platforms: "PC, Xbox",
-        description: "Conduce cientos de coches por un enorme mundo abierto.",
-        graphics: 100,
-        gameplay: 95,
-        fun: 96,
-        multiplayer: 95
-    },
-
-    godofwar: {
-        rating: "9.5/10",
-        year: "2018",
-        developer: "Santa Monica Studio",
-        platforms: "PC, PlayStation",
-        description: "Acompaña a Kratos y Atreus en una aventura llena de acción.",
-        graphics: 98,
-        gameplay: 98,
+        gameplay: 96,
         fun: 97,
         multiplayer: 0
     },
 
-    rdr2: {
-        rating: "10/10",
-        year: "2018",
-        developer: "Rockstar Games",
+    "Resident Evil 4": {
+        categoria: "Terror",
+        rating: "4.9",
+        year: "2023",
+        developer: "Capcom",
         platforms: "PC, PlayStation, Xbox",
-        description: "Vive una gran aventura en el lejano oeste.",
-        graphics: 100,
-        gameplay: 98,
+        description: "Survival horror con acción, exploración y una historia intensa.",
+        graphics: 98,
+        gameplay: 97,
+        fun: 96,
+        multiplayer: 0
+    },
+
+    "Need for Speed Most Wanted": {
+        categoria: "Carreras",
+        rating: "4.8",
+        year: "2005",
+        developer: "EA",
+        platforms: "PC, PlayStation, Xbox",
+        description: "Juego clásico de carreras callejeras con persecuciones policiales.",
+        graphics: 82,
+        gameplay: 94,
         fun: 98,
-        multiplayer: 90
+        multiplayer: 85
     },
 
-    warzone: {
-        rating: "8.5/10",
-        year: "2020",
-        developer: "Infinity Ward / Raven Software",
-        platforms: "PC, PlayStation, Xbox",
-        description: "Combate por sobrevivir en intensas partidas multijugador.",
-        graphics: 95,
+    "Forza Horizon 5": {
+        categoria: "Carreras",
+        rating: "4.8",
+        year: "2021",
+        developer: "Playground Games",
+        platforms: "PC, Xbox",
+        description: "Juego de carreras de mundo abierto ambientado en México.",
+        graphics: 100,
         gameplay: 96,
-        fun: 94,
-        multiplayer: 100
-    },
-
-    terraria: {
-        rating: "9/10",
-        year: "2011",
-        developer: "Re-Logic",
-        platforms: "PC, Consolas, Móvil",
-        description: "Explora, construye y lucha en un mundo lleno de posibilidades.",
-        graphics: 75,
-        gameplay: 98,
         fun: 98,
         multiplayer: 95
     },
 
-    eldenring: {
-        rating: "10/10",
-        year: "2022",
-        developer: "FromSoftware",
+    "God of War": {
+        categoria: "Aventura",
+        rating: "4.9",
+        year: "2018",
+        developer: "Santa Monica Studio",
+        platforms: "PC, PlayStation",
+        description: "Aventura épica protagonizada por Kratos y su hijo Atreus.",
+        graphics: 99,
+        gameplay: 98,
+        fun: 98,
+        multiplayer: 0
+    },
+
+    "Red Dead Redemption 2": {
+        categoria: "Aventura",
+        rating: "4.9",
+        year: "2018",
+        developer: "Rockstar Games",
         platforms: "PC, PlayStation, Xbox",
-        description: "Explora un enorme mundo lleno de enemigos, secretos y desafíos.",
-        graphics: 98,
-        gameplay: 100,
-        fun: 96,
+        description: "Una enorme aventura de mundo abierto ambientada en el Viejo Oeste.",
+        graphics: 100,
+        gameplay: 99,
+        fun: 99,
         multiplayer: 90
     },
 
-    thelastofus: {
-        rating: "9.5/10",
+    "Call of Duty Warzone": {
+        categoria: "Shooter",
+        rating: "4.6",
+        year: "2020",
+        developer: "Activision",
+        platforms: "PC, PlayStation, Xbox",
+        description: "Battle royale y shooter competitivo de la franquicia Call of Duty.",
+        graphics: 96,
+        gameplay: 97,
+        fun: 95,
+        multiplayer: 100
+    },
+
+    "Terraria": {
+        categoria: "Sandbox",
+        rating: "4.9",
+        year: "2011",
+        developer: "Re-Logic",
+        platforms: "PC, PlayStation, Xbox, Switch, Mobile",
+        description: "Aventura 2D con exploración, construcción, combate y supervivencia.",
+        graphics: 75,
+        gameplay: 98,
+        fun: 99,
+        multiplayer: 95
+    },
+
+    "Elden Ring": {
+        categoria: "RPG",
+        rating: "4.9",
         year: "2022",
+        developer: "FromSoftware",
+        platforms: "PC, PlayStation, Xbox",
+        description: "RPG de mundo abierto con exploración, combates difíciles y una enorme cantidad de contenido.",
+        graphics: 98,
+        gameplay: 99,
+        fun: 97,
+        multiplayer: 90
+    },
+
+    "The Last of Us": {
+        categoria: "Terror / Aventura",
+        rating: "4.9",
+        year: "2013",
         developer: "Naughty Dog",
         platforms: "PC, PlayStation",
-        description: "Una historia de supervivencia en un mundo devastado.",
-        graphics: 100,
-        gameplay: 98,
-        fun: 96,
+        description: "Aventura de supervivencia con una historia centrada en Joel y Ellie.",
+        graphics: 98,
+        gameplay: 97,
+        fun: 97,
         multiplayer: 0
     }
 
@@ -439,110 +477,161 @@ const datosJuegos = {
 
 
 // ========================================
-// 🪟 ABRIR MODAL
+// 🪟 MODAL DE JUEGOS
 // ========================================
 
-botones.forEach(function (boton) {
+const modal = document.getElementById("game-modal");
+const closeModal = document.getElementById("close-modal");
+
+const modalImage = document.getElementById("modal-image");
+const modalTitle = document.getElementById("modal-title");
+const modalCategory = document.getElementById("modal-category");
+const modalRating = document.getElementById("modal-rating");
+const modalYear = document.getElementById("modal-year");
+const modalDeveloper = document.getElementById("modal-developer");
+const modalPlatforms = document.getElementById("modal-platforms");
+const modalDescription = document.getElementById("modal-description");
+
+
+// ========================================
+// 📊 BARRAS DE ESTADÍSTICAS
+// ========================================
+
+const graphicsBar = document.getElementById("graphics-bar");
+const gameplayBar = document.getElementById("gameplay-bar");
+const funBar = document.getElementById("fun-bar");
+const multiplayerBar = document.getElementById("multiplayer-bar");
+
+const graphicsNumber = document.getElementById("graphics-number");
+const gameplayNumber = document.getElementById("gameplay-number");
+const funNumber = document.getElementById("fun-number");
+const multiplayerNumber = document.getElementById("multiplayer-number");
+
+
+// ========================================
+// 🎮 ABRIR INFORMACIÓN DEL JUEGO
+// ========================================
+
+const botonesJuego = document.querySelectorAll(".game-button");
+
+botonesJuego.forEach(function (boton) {
 
     boton.addEventListener("click", function () {
 
-        const juegoId = boton.dataset.game;
-        const juego = datosJuegos[juegoId];
-
         const tarjeta = boton.closest(".game-card");
 
-        if (!juego || !tarjeta || !modal) {
+        if (!tarjeta) {
             return;
         }
 
+        const titulo = tarjeta
+            .querySelector(".game-info h3");
+
+        if (!titulo) {
+            return;
+        }
+
+        const nombreJuego = titulo.textContent.trim();
+
+        const datos = datosJuegos[nombreJuego];
+
+        if (!datos) {
+            console.log(
+                "No hay información para:",
+                nombreJuego
+            );
+
+            return;
+        }
+
+
+        // Imagen
         const imagen = tarjeta.querySelector("img");
-        const titulo = tarjeta.querySelector("h3");
-        const categoria = tarjeta.querySelector(".game-info span");
 
-        if (modalImage && imagen) {
+        if (imagen && modalImage) {
             modalImage.src = imagen.src;
-            modalImage.alt = imagen.alt;
+            modalImage.alt = nombreJuego;
         }
 
-        if (modalTitle && titulo) {
-            modalTitle.textContent = titulo.textContent;
+
+        // Información
+        if (modalTitle) {
+            modalTitle.textContent = nombreJuego;
         }
 
-        if (modalCategory && categoria) {
-            modalCategory.textContent = categoria.textContent;
+        if (modalCategory) {
+            modalCategory.textContent = datos.categoria;
         }
 
         if (modalRating) {
-            modalRating.textContent = juego.rating;
+            modalRating.textContent = datos.rating;
         }
 
         if (modalYear) {
-            modalYear.textContent = juego.year;
+            modalYear.textContent = datos.year;
         }
 
         if (modalDeveloper) {
-            modalDeveloper.textContent = juego.developer;
+            modalDeveloper.textContent = datos.developer;
         }
 
         if (modalPlatforms) {
-            modalPlatforms.textContent = juego.platforms;
+            modalPlatforms.textContent = datos.platforms;
         }
 
         if (modalDescription) {
-            modalDescription.textContent = juego.description;
+            modalDescription.textContent = datos.description;
         }
 
 
         // Estadísticas
-        const graphicsBar = document.getElementById("graphics-bar");
-        const gameplayBar = document.getElementById("gameplay-bar");
-        const funBar = document.getElementById("fun-bar");
-        const multiplayerBar = document.getElementById("multiplayer-bar");
-
-        const graphicsNumber = document.getElementById("graphics-number");
-        const gameplayNumber = document.getElementById("gameplay-number");
-        const funNumber = document.getElementById("fun-number");
-        const multiplayerNumber = document.getElementById("multiplayer-number");
-
-
         if (graphicsBar) {
-            graphicsBar.style.width = juego.graphics + "%";
+            graphicsBar.style.width =
+                datos.graphics + "%";
         }
 
         if (gameplayBar) {
-            gameplayBar.style.width = juego.gameplay + "%";
+            gameplayBar.style.width =
+                datos.gameplay + "%";
         }
 
         if (funBar) {
-            funBar.style.width = juego.fun + "%";
+            funBar.style.width =
+                datos.fun + "%";
         }
 
         if (multiplayerBar) {
-            multiplayerBar.style.width = juego.multiplayer + "%";
+            multiplayerBar.style.width =
+                datos.multiplayer + "%";
         }
 
 
+        // Números
         if (graphicsNumber) {
-            graphicsNumber.textContent = juego.graphics + "%";
+            graphicsNumber.textContent =
+                datos.graphics + "/100";
         }
 
         if (gameplayNumber) {
-            gameplayNumber.textContent = juego.gameplay + "%";
+            gameplayNumber.textContent =
+                datos.gameplay + "/100";
         }
 
         if (funNumber) {
-            funNumber.textContent = juego.fun + "%";
+            funNumber.textContent =
+                datos.fun + "/100";
         }
 
         if (multiplayerNumber) {
-            multiplayerNumber.textContent = juego.multiplayer + "%";
+            multiplayerNumber.textContent =
+                datos.multiplayer + "/100";
         }
 
 
         // Mostrar modal
-        modal.classList.add("active");
-
-        document.body.style.overflow = "hidden";
+        if (modal) {
+            modal.classList.add("active");
+        }
 
     });
 
@@ -553,31 +642,26 @@ botones.forEach(function (boton) {
 // ❌ CERRAR MODAL
 // ========================================
 
-if (cerrarModal) {
+if (closeModal) {
 
-    cerrarModal.addEventListener("click", function () {
+    closeModal.addEventListener("click", function () {
 
-        modal.classList.remove("active");
-
-        document.body.style.overflow = "";
+        if (modal) {
+            modal.classList.remove("active");
+        }
 
     });
 
 }
 
 
-// Cerrar haciendo clic fuera del modal
-
+// Cerrar haciendo clic fuera
 if (modal) {
 
     modal.addEventListener("click", function (evento) {
 
         if (evento.target === modal) {
-
             modal.classList.remove("active");
-
-            document.body.style.overflow = "";
-
         }
 
     });
@@ -586,18 +670,13 @@ if (modal) {
 
 
 // Cerrar con ESC
-
 document.addEventListener("keydown", function (evento) {
 
-    if (
-        evento.key === "Escape" &&
-        modal &&
-        modal.classList.contains("active")
-    ) {
+    if (evento.key === "Escape") {
 
-        modal.classList.remove("active");
-
-        document.body.style.overflow = "";
+        if (modal) {
+            modal.classList.remove("active");
+        }
 
     }
 
@@ -612,19 +691,12 @@ const favoritos = document.querySelectorAll(".favorite");
 
 favoritos.forEach(function (boton) {
 
-    boton.addEventListener("click", function () {
+    boton.addEventListener("click", function (evento) {
 
-        boton.classList.toggle("liked");
+        evento.preventDefault();
+        evento.stopPropagation();
 
-        if (boton.classList.contains("liked")) {
-
-            boton.textContent = "♥";
-
-        } else {
-
-            boton.textContent = "♡";
-
-        }
+        boton.classList.toggle("active");
 
     });
 
@@ -649,23 +721,31 @@ if (menuButton && navLinks) {
 }
 
 
-// Cerrar menú al tocar un enlace
+// ========================================
+// 📱 CERRAR MENÚ AL ELEGIR UNA OPCIÓN
+// ========================================
 
-const enlaces = document.querySelectorAll(".nav-links a");
+if (navLinks) {
 
-enlaces.forEach(function (enlace) {
+    const enlaces = navLinks.querySelectorAll("a");
 
-    enlace.addEventListener("click", function () {
+    enlaces.forEach(function (enlace) {
 
-        if (navLinks) {
+        enlace.addEventListener("click", function () {
+
             navLinks.classList.remove("active");
-        }
+
+        });
 
     });
 
-});
+}
 
 
 // ========================================
-// 🎮 FIN DEL SCRIPT
+// ✅ COMPROBACIÓN
 // ========================================
+
+console.log("GAMEZONE cargado correctamente.");
+console.log("Filtros encontrados:", filtros.length);
+console.log("Juegos encontrados:", juegos.length);
