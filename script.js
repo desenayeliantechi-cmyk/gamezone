@@ -1,48 +1,107 @@
-const searchInput = document.getElementById("searchInput");
-const filterButtons = document.querySelectorAll(".filter-btn");
-const gameCards = document.querySelectorAll(".game-card");
+// ========================================
+// GAMEZONE - BUSCADOR Y FILTROS
+// ========================================
 
-let currentFilter = "all";
+const buscador = document.getElementById("buscador");
+const filtros = document.querySelectorAll(".filter");
+const juegos = document.querySelectorAll(".game-card");
 
-function filterGames() {
-    const searchText = searchInput.value.toLowerCase().trim();
+// ========================================
+// FILTRAR JUEGOS
+// ========================================
 
-    gameCards.forEach(card => {
-        const gameName = card.querySelector("h3")?.textContent.toLowerCase() || "";
-        const gameText = card.textContent.toLowerCase();
-        const category = card.dataset.category?.toLowerCase() || "";
+function filtrarJuegos() {
 
-        const matchesSearch =
-            gameName.includes(searchText) ||
-            gameText.includes(searchText);
+    const texto = buscador.value.toLowerCase().trim();
 
-        const matchesCategory =
-            currentFilter === "all" ||
-            category === currentFilter;
+    filtros.forEach(boton => {
 
-        if (matchesSearch && matchesCategory) {
-            card.style.display = "block";
-        } else {
-            card.style.display = "none";
-        }
+        const categoriaSeleccionada =
+            boton.classList.contains("active")
+                ? boton.dataset.filter.toLowerCase()
+                : null;
+
+        if (!categoriaSeleccionada) return;
+
+        juegos.forEach(juego => {
+
+            // Nombre del juego
+            const nombre =
+                juego.querySelector("h3")?.textContent.toLowerCase() || "";
+
+            // Todo el texto de la tarjeta
+            const contenido =
+                juego.textContent.toLowerCase();
+
+            // Categorías del juego
+            const categorias =
+                juego.dataset.category?.toLowerCase().split(" ") || [];
+
+            // ========================================
+            // BUSCADOR
+            // ========================================
+
+            const coincideBusqueda =
+                nombre.includes(texto) ||
+                contenido.includes(texto);
+
+            // ========================================
+            // CATEGORÍA
+            // ========================================
+
+            const coincideCategoria =
+                categoriaSeleccionada === "todos" ||
+                categorias.includes(categoriaSeleccionada);
+
+            // ========================================
+            // MOSTRAR / OCULTAR
+            // ========================================
+
+            if (coincideBusqueda && coincideCategoria) {
+                juego.style.display = "";
+            } else {
+                juego.style.display = "none";
+            }
+
+        });
+
     });
+
 }
 
-searchInput.addEventListener("input", filterGames);
+// ========================================
+// BUSCADOR
+// ========================================
 
-filterButtons.forEach(button => {
-    button.addEventListener("click", () => {
+buscador.addEventListener("input", filtrarJuegos);
 
-        filterButtons.forEach(btn => {
+
+// ========================================
+// BOTONES DE FILTRO
+// ========================================
+
+filtros.forEach(boton => {
+
+    boton.addEventListener("click", () => {
+
+        // Quitar active de todos
+        filtros.forEach(btn => {
             btn.classList.remove("active");
         });
 
-        button.classList.add("active");
+        // Activar el seleccionado
+        boton.classList.add("active");
 
-        currentFilter = button.dataset.filter.toLowerCase();
+        // Aplicar filtro
+        filtrarJuegos();
 
-        filterGames();
     });
+
 });
 
-filterGames();
+
+// ========================================
+// FILTRO INICIAL
+// ========================================
+
+filtrarJuegos();
