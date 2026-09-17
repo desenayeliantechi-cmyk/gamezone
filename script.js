@@ -1,9 +1,9 @@
-```javascript
 const buscador =
 document.getElementById("buscador");
 
 const juegos =
 document.querySelectorAll(".game-card");
+
 
 // ========================================
 // 🔍 BUSCADOR
@@ -34,13 +34,20 @@ buscador.addEventListener(
                 nombre.includes(texto) ||
                 categoria.includes(texto)
             ) {
+
                 juego.style.display = "grid";
+
             } else {
+
                 juego.style.display = "none";
+
             }
+
         });
+
     }
 );
+
 
 // ========================================
 // 🎯 FILTROS
@@ -55,106 +62,162 @@ filtros.forEach(function (filtro) {
         "click",
         function () {
 
+            // Quitar active de todos
             filtros.forEach(function (boton) {
+
                 boton.classList.remove("active");
+
             });
 
+            // Activar botón seleccionado
             filtro.classList.add("active");
 
+            // Obtener categoría
             const categoria =
                 (filtro.dataset.filter || "")
                 .toLowerCase()
                 .trim();
 
+
             juegos.forEach(function (juego) {
 
+                // Obtener categorías del juego
                 const categorias =
                     (juego.dataset.category || "")
                     .toLowerCase()
                     .trim();
 
+
+                // Texto completo de la tarjeta
                 const textoTarjeta =
                     juego.textContent
                     .toLowerCase();
 
+
                 let mostrar = false;
 
+
+                // 🎮 TODOS
                 if (categoria === "todos") {
+
                     mostrar = true;
+
                 }
+
+
+                // 🔫 SHOOTER
                 else if (categoria === "shooter") {
+
                     mostrar =
                         categorias.includes("shooter") ||
                         categorias.includes("fps") ||
                         textoTarjeta.includes("shooter") ||
                         textoTarjeta.includes("fps");
+
                 }
+
+
+                // 🔥 BATTLE ROYALE
                 else if (categoria === "battle") {
+
                     mostrar =
                         categorias.includes("battle") ||
                         categorias.includes("battle royale") ||
                         textoTarjeta.includes("battle royale");
+
                 }
+
+
+                // 🧱 SANDBOX
                 else if (categoria === "sandbox") {
+
                     mostrar =
                         categorias.includes("sandbox") ||
                         textoTarjeta.includes("sandbox");
+
                 }
+
+
+                // ⚔️ MOBA
                 else if (categoria === "moba") {
+
                     mostrar =
                         categorias.includes("moba") ||
                         textoTarjeta.includes("moba");
+
                 }
+
+
+                // 🚗 CARRERAS
                 else if (categoria === "carreras") {
+
                     mostrar =
                         categorias.includes("carreras") ||
                         categorias.includes("carrera") ||
                         textoTarjeta.includes("carreras");
+
                 }
+
+
+                // 🧟 TERROR
                 else if (categoria === "terror") {
+
                     mostrar =
                         categorias.includes("terror") ||
                         textoTarjeta.includes("terror");
+
                 }
+
+
+                // 🗺️ AVENTURA
                 else if (categoria === "aventura") {
+
                     mostrar =
                         categorias.includes("aventura") ||
                         textoTarjeta.includes("aventura");
+
                 }
+
+
+                // ⚔️ RPG
                 else if (categoria === "rpg") {
+
                     mostrar =
                         categorias.includes("rpg") ||
                         textoTarjeta.includes("rpg");
+
                 }
 
+
+                // Mostrar u ocultar
                 if (mostrar) {
+
                     juego.style.display = "grid";
+
                 } else {
+
                     juego.style.display = "none";
+
                 }
+
             });
 
+
+            // Limpiar buscador
             buscador.value = "";
 
-            // 📍 Bajar automáticamente hasta los juegos
-            const juegosSection =
-                document.querySelector(".games");
-
-            if (juegosSection) {
-                juegosSection.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start"
-                });
-            }
         }
     );
+
 });
+
 
 // ========================================
 // 🎮 DATOS DE LOS JUEGOS
 // ========================================
 
 const datosJuegos = {
+
     roblox: {
         categoria: "🎮 Plataforma / Sandbox",
         rating: "8.5 / 10",
@@ -167,6 +230,7 @@ const datosJuegos = {
         multiplayer: 98,
         description: "Roblox es una plataforma de experiencias creada por usuarios. Permite jugar, explorar y crear diferentes mundos y juegos."
     },
+
 
     minecraft: {
         categoria: "⛏️ Sandbox / Supervivencia",
@@ -181,6 +245,7 @@ const datosJuegos = {
         description: "Minecraft es un juego de construcción y supervivencia donde puedes explorar mundos generados, conseguir recursos y construir prácticamente cualquier cosa."
     },
 
+
     fortnite: {
         categoria: "🔫 Battle Royale / Shooter",
         rating: "9.0 / 10",
@@ -193,6 +258,7 @@ const datosJuegos = {
         multiplayer: 98,
         description: "Fortnite combina combates, construcción y diferentes experiencias multijugador. Su universo incluye varios modos de juego."
     },
+
 
     league: {
         categoria: "⚔️ MOBA",
@@ -207,6 +273,7 @@ const datosJuegos = {
         description: "League of Legends es un MOBA competitivo donde dos equipos se enfrentan utilizando campeones con diferentes habilidades."
     },
 
+
     freefire: {
         categoria: "🔥 Battle Royale",
         rating: "8.5 / 10",
@@ -219,6 +286,7 @@ const datosJuegos = {
         multiplayer: 97,
         description: "Free Fire es un Battle Royale enfocado en partidas rápidas. Los jugadores deben conseguir recursos y enfrentarse hasta que quede un superviviente."
     },
+
 
     pubg: {
         categoria: "🔫 Battle Royale",
@@ -233,6 +301,7 @@ const datosJuegos = {
         description: "PUBG Mobile lleva la experiencia Battle Royale a dispositivos móviles, con partidas donde los jugadores luchan por sobrevivir."
     },
 
+
     candycrush: {
         categoria: "🍬 Puzzle / Casual",
         rating: "8.0 / 10",
@@ -245,6 +314,7 @@ const datosJuegos = {
         multiplayer: 55,
         description: "Candy Crush Saga es un juego de puzzles basado en combinar caramelos y completar diferentes niveles."
     },
+
 
     cs2: {
         categoria: "🎯 FPS / Táctico",
@@ -259,6 +329,7 @@ const datosJuegos = {
         description: "Counter-Strike 2 es un shooter táctico competitivo donde dos equipos se enfrentan utilizando estrategia, precisión y trabajo en equipo."
     },
 
+
     valorant: {
         categoria: "🎯 FPS / Táctico",
         rating: "9.0 / 10",
@@ -271,6 +342,7 @@ const datosJuegos = {
         multiplayer: 99,
         description: "VALORANT combina disparos tácticos con agentes que poseen habilidades especiales. Los equipos compiten en rondas de ataque y defensa."
     },
+
 
     gta5: {
         categoria: "🚗 Mundo abierto / Acción",
@@ -285,6 +357,7 @@ const datosJuegos = {
         description: "Grand Theft Auto V presenta un enorme mundo abierto donde puedes explorar Los Santos, completar misiones y disfrutar de diferentes actividades."
     },
 
+
     spiderman: {
         categoria: "🕷️ Acción / Aventura",
         rating: "9.0 / 10",
@@ -297,6 +370,7 @@ const datosJuegos = {
         multiplayer: 0,
         description: "Marvel's Spider-Man permite recorrer Nueva York como Spider-Man, combatir enemigos y disfrutar de una aventura basada en el famoso superhéroe."
     },
+
 
     resident4: {
         categoria: "🧟 Terror / Acción",
@@ -311,6 +385,7 @@ const datosJuegos = {
         description: "Resident Evil 4 es una aventura de acción y terror donde Leon Kennedy debe enfrentarse a peligrosos enemigos y descubrir los secretos de una misteriosa región."
     },
 
+
     nfs: {
         categoria: "🚗 Carreras",
         rating: "9.0 / 10",
@@ -323,6 +398,7 @@ const datosJuegos = {
         multiplayer: 85,
         description: "Need for Speed Most Wanted combina carreras callejeras, coches modificados y persecuciones policiales en una experiencia clásica de conducción."
     },
+
 
     forza5: {
         categoria: "🏎️ Carreras",
@@ -337,6 +413,7 @@ const datosJuegos = {
         description: "Forza Horizon 5 ofrece carreras de mundo abierto, numerosos vehículos y diferentes actividades de conducción en un enorme escenario inspirado en México."
     },
 
+
     godofwar: {
         categoria: "⚔️ Acción / Aventura",
         rating: "9.5 / 10",
@@ -349,6 +426,7 @@ const datosJuegos = {
         multiplayer: 0,
         description: "God of War sigue el viaje de Kratos y su hijo Atreus mientras atraviesan los mundos de la mitología nórdica."
     },
+
 
     rdr2: {
         categoria: "🤠 Acción / Aventura",
@@ -363,6 +441,7 @@ const datosJuegos = {
         description: "Red Dead Redemption 2 cuenta la historia de Arthur Morgan y la banda de Van der Linde en un enorme mundo abierto ambientado en el Viejo Oeste."
     },
 
+
     warzone: {
         categoria: "🔫 Shooter / Battle Royale",
         rating: "8.7 / 10",
@@ -375,6 +454,7 @@ const datosJuegos = {
         multiplayer: 98,
         description: "Call of Duty: Warzone es una experiencia de combate multijugador que combina acción rápida y diferentes modos de juego."
     },
+
 
     terraria: {
         categoria: "🧱 Aventura / Sandbox",
@@ -389,6 +469,7 @@ const datosJuegos = {
         description: "Terraria combina exploración, construcción, supervivencia y combate en un mundo abierto en dos dimensiones."
     },
 
+
     eldenring: {
         categoria: "⚔️ RPG / Acción",
         rating: "9.5 / 10",
@@ -402,6 +483,7 @@ const datosJuegos = {
         description: "Elden Ring es un RPG de acción de mundo abierto donde los jugadores exploran las Tierras Intermedias y enfrentan numerosos desafíos."
     },
 
+
     thelastofus: {
         categoria: "🧟 Acción / Aventura",
         rating: "9.5 / 10",
@@ -414,7 +496,9 @@ const datosJuegos = {
         multiplayer: 0,
         description: "The Last of Us presenta una historia de supervivencia en un mundo devastado, siguiendo el viaje de Joel y Ellie."
     }
+
 };
+
 
 // ========================================
 // 🎮 MODAL
@@ -453,6 +537,7 @@ document.getElementById("modal-platforms");
 const modalDescription =
 document.getElementById("modal-description");
 
+
 // ========================================
 // 📊 BARRAS
 // ========================================
@@ -469,6 +554,7 @@ document.getElementById("fun-bar");
 const multiplayerBar =
 document.getElementById("multiplayer-bar");
 
+
 // ========================================
 // 🔢 NÚMEROS
 // ========================================
@@ -484,6 +570,7 @@ document.getElementById("fun-number");
 
 const multiplayerNumber =
 document.getElementById("multiplayer-number");
+
 
 // ========================================
 // 🚀 ABRIR INFORMACIÓN
@@ -504,6 +591,7 @@ botones.forEach(function (boton) {
             const datos =
                 datosJuegos[game];
 
+            // Seguridad por si falta información
             if (!datos || !tarjeta) {
                 return;
             }
@@ -545,21 +633,29 @@ botones.forEach(function (boton) {
             modalDescription.textContent =
                 datos.description;
 
+
+            // Reiniciar barras
             graphicsBar.style.width = "0%";
             gameplayBar.style.width = "0%";
             funBar.style.width = "0%";
             multiplayerBar.style.width = "0%";
 
+
+            // Reiniciar números
             graphicsNumber.textContent = "0%";
             gameplayNumber.textContent = "0%";
             funNumber.textContent = "0%";
             multiplayerNumber.textContent = "0%";
 
+
+            // Mostrar modal
             modal.classList.add("active");
 
             document.body.style.overflow =
                 "hidden";
 
+
+            // Animar estadísticas
             setTimeout(function () {
 
                 graphicsBar.style.width =
@@ -574,6 +670,7 @@ botones.forEach(function (boton) {
                 multiplayerBar.style.width =
                     datos.multiplayer + "%";
 
+
                 graphicsNumber.textContent =
                     datos.graphics + "%";
 
@@ -587,9 +684,12 @@ botones.forEach(function (boton) {
                     datos.multiplayer + "%";
 
             }, 200);
+
         }
     );
+
 });
+
 
 // ========================================
 // ❌ CERRAR MODAL
@@ -606,7 +706,9 @@ function cerrarVentana() {
 
     document.body.style.overflow =
         "auto";
+
 }
+
 
 // ========================================
 // 🖱️ CLICK FUERA
@@ -617,11 +719,14 @@ modal.addEventListener(
     function (evento) {
 
         if (evento.target === modal) {
+
             cerrarVentana();
+
         }
 
     }
 );
+
 
 // ========================================
 // ⌨️ ESC
@@ -632,11 +737,14 @@ document.addEventListener(
     function (evento) {
 
         if (evento.key === "Escape") {
+
             cerrarVentana();
+
         }
 
     }
 );
+
 
 // ========================================
 // ❤️ FAVORITOS
@@ -656,13 +764,20 @@ favoritos.forEach(function (boton) {
             if (
                 boton.classList.contains("liked")
             ) {
+
                 boton.textContent = "♥";
+
             } else {
+
                 boton.textContent = "♡";
+
             }
+
         }
     );
+
 });
+
 
 // ========================================
 // 📱 MENÚ MÓVIL
@@ -683,6 +798,7 @@ menuButton.addEventListener(
     }
 );
 
+
 // ========================================
 // 🔗 CERRAR MENÚ
 // ========================================
@@ -700,9 +816,5 @@ enlaces.forEach(function (enlace) {
 
         }
     );
+
 });
-```
-
-**Ahora solo reemplaza todo el contenido de tu `script.js` por este código y haz `Commit changes → Commit directly to main`.** 🚀
-
-Después prueba **Shooter**: debería filtrar los juegos **y desplazarte automáticamente hasta donde están las tarjetas**.
